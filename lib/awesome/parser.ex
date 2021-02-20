@@ -7,22 +7,20 @@ defmodule Awesome.Item do
 end
 
 defmodule Awesome.Parser do
-  import HTTPoison
 
   def get_sections do
-    file = get_file()
-    sections = parse_file(file)
-    sections
+    get_file()
+    |> parse_file
   end
 
-  def get_file do
+  defp get_file do
     url = "https://raw.githubusercontent.com/h4cc/awesome-elixir/master/README.md"
-    start()
-    %HTTPoison.Response{body: body} = get! url
+    HTTPoison.start()
+    %HTTPoison.Response{body: body} = HTTPoison.get! url
     body
   end
 
-  def parse_file(file) do
+  defp parse_file(file) do
     [content | _resources] = String.split(file, "\n# ")
     [_header | content] = String.split(content, "## ", trim: true)
     content

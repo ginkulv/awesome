@@ -43,7 +43,8 @@ defmodule Awesome.MixProject do
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
       {:httpoison, "~> 1.8"},
-      {:earmark, "~> 1.1"}
+      {:earmark, "~> 1.1"},
+      {:sched_ex, "~> 1.0"}
     ]
   end
 

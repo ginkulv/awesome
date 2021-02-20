@@ -12,9 +12,10 @@ defmodule Awesome.Application do
       # Start the PubSub system
       {Phoenix.PubSub, name: Awesome.PubSub},
       # Start the Endpoint (http/https)
-      AwesomeWeb.Endpoint
+      AwesomeWeb.Endpoint,
       # Start a worker by calling: Awesome.Worker.start_link(arg)
       # {Awesome.Worker, arg}
+      %{id: "daily", start: {SchedEx, :run_every, [Awesome.Runner, :update_list, [], "* * * * *"]}}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
