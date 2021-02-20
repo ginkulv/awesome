@@ -42,7 +42,8 @@ defmodule Awesome.MixProject do
       {:gettext, "~> 0.11"},
       {:jason, "~> 1.0"},
       {:plug_cowboy, "~> 2.0"},
-      {:httpoison, "~> 1.8"}
+      {:httpoison, "~> 1.8"},
+      {:earmark, "~> 1.1"}
     ]
   end
 

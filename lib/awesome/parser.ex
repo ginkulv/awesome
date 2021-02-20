@@ -3,7 +3,7 @@ defmodule Awesome.Section do
 end
 
 defmodule Awesome.Item do
-  defstruct [:url, :full_text]
+  defstruct [:url, :stars, :days, :full_text]
 end
 
 defmodule Awesome.Parser do
@@ -24,12 +24,16 @@ defmodule Awesome.Parser do
 
   def parse_file(file) do
     [content | _resources] = String.split(file, "\n# ")
-    [header | content] = String.split(content, "## ", trim: true)
+    [_header | content] = String.split(content, "## ", trim: true)
     content
     |> Enum.map(&String.split(&1, "\n", trim: true))
     |> Enum.map(fn(section) ->
       [name | section] = section
       [description | items] = section
+      items = Enum.map(items, fn(item) ->
+        [_, url] = Regex.run(~r"\((.*)\)", item)
+        %Awesome.Item{url: url, full_text: item}
+      end)
       %Awesome.Section{name: name, description: description, items: items}
     end)
   end

@@ -5,16 +5,12 @@
 
   <%= for section <- @sections do %>
     <section class="row">
-      <h3><%= section.name %></h3>
+      <h3 id=<%= section.name %>><%= section.name %></h3>
     </section>
     <section class="row">
-      <span><%= section.description %></span>
+      <span><%= as_html section.description %></span>
     </section>
-    <%= for item <- section.items do %>
-      <ul>
-        <li><%= item %></li>
-      </ul>
-    <% end %>
+    <%= as_html section.items %>
   <% end %>
 </section>
 
