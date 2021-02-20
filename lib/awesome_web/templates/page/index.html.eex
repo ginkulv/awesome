@@ -3,17 +3,18 @@
     <h1><b>Awesome Elixir</b></h1>
   </section>
 
-  <section class="row">
-    <h2>Заголовок</h2>
-  </section>
-  <section class="row">
-    <span>Текст</span>
-  </section>
-  <ul>
-    <li>Element</li>
-    <li>Element</li>
-    <li>Element</li>
-    <li>Element</li>
-  </ul>
+  <%= for section <- @sections do %>
+    <section class="row">
+      <h3><%= section.name %></h3>
+    </section>
+    <section class="row">
+      <span><%= section.description %></span>
+    </section>
+    <%= for item <- section.items do %>
+      <ul>
+        <li><%= item %></li>
+      </ul>
+    <% end %>
+  <% end %>
 </section>
 
