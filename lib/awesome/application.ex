@@ -7,25 +7,17 @@ defmodule Awesome.Application do
 
   def start(_type, _args) do
     children = [
-      # Start the Telemetry supervisor
       AwesomeWeb.Telemetry,
-      # Start the PubSub system
       {Phoenix.PubSub, name: Awesome.PubSub},
-      # Start the Endpoint (http/https)
       AwesomeWeb.Endpoint,
-      # Start a worker by calling: Awesome.Worker.start_link(arg)
-      # {Awesome.Worker, arg}
-      %{id: "daily", start: {SchedEx, :run_every, [Awesome.Runner, :update_list, [], "* * * * *"]}}
+      Awesome.Repo,
+      %{id: "daily", start: {SchedEx, :run_every, [Awesome.Runner, :update_sections, [], "1 1 * * *"]}}
     ]
 
-    # See https://hexdocs.pm/elixir/Supervisor.html
-    # for other strategies and supported options
     opts = [strategy: :one_for_one, name: Awesome.Supervisor]
     Supervisor.start_link(children, opts)
   end
 
-  # Tell Phoenix to update the endpoint configuration
-  # whenever the application is updated.
   def config_change(changed, _new, removed) do
     AwesomeWeb.Endpoint.config_change(changed, removed)
     :ok
