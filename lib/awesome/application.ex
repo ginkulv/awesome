@@ -10,7 +10,8 @@ defmodule Awesome.Application do
       AwesomeWeb.Telemetry,
       {Phoenix.PubSub, name: Awesome.PubSub},
       AwesomeWeb.Endpoint,
-      Awesome.Repo,
+      {Awesome.Repo, []},
+      Awesome.Runner,
       %{id: "daily", start: {SchedEx, :run_every, [Awesome.Runner, :update_sections, [], "1 1 * * *"]}}
     ]
 

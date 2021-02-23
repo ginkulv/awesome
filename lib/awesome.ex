@@ -1,9 +1,15 @@
 defmodule Awesome do
-  @moduledoc """
-  Awesome keeps the contexts that define your domain
-  and business logic.
+  alias Awesome.{Repo, Section}
+  import Ecto.Query
 
-  Contexts are also responsible for managing your data, regardless
-  if it comes from the database, an external API or others.
-  """
+  def get_sections() do
+    Repo.all(Section)
+    |> Repo.preload(:items)
+  end
+
+  def get_sections(min_stars) do
+    IO.puts min_stars
+    Repo.all(Section)
+    |> Repo.preload(items: from(i in Awesome.Item, where: i.stars >= ^min_stars))
+  end
 end

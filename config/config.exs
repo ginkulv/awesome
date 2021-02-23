@@ -7,6 +7,15 @@
 # General application configuration
 use Mix.Config
 
+config :awesome, ecto_repos: [Awesome.Repo]
+
+config :awesome, Awesome.Repo,
+  database: "awesome",
+  username: "postgres",
+  password: "",
+  hostname: "localhost",
+  port: "5432"
+
 # Configures the endpoint
 config :awesome, AwesomeWeb.Endpoint,
   url: [host: "localhost"],
