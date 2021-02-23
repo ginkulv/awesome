@@ -9,19 +9,7 @@ end
 defmodule Awesome.Parser do
   alias Awesome.Github
 
-  def get_sections do
-    get_file()
-    |> parse_file
-  end
-
-  defp get_file do
-    url = "https://raw.githubusercontent.com/h4cc/awesome-elixir/master/README.md"
-    HTTPoison.start()
-    %HTTPoison.Response{body: body} = HTTPoison.get! url
-    body
-  end
-
-  defp parse_file(file) do
+  def get_sections(file) do
     [content | _resources] = String.split(file, "\n# ")
     [_header | content] = String.split(content, "## ", trim: true)
     content
@@ -35,7 +23,7 @@ defmodule Awesome.Parser do
                 [_, url] = Regex.run(~r"\((.*?)\)", item)
                 case url |> parse_item do
                   [days, stars] -> %Awesome.Item{url: url, stars: stars, days: days, full_text: item}
-                  [] -> nil
+                  [] -> nil # some links are outdated
                 end
               end)
               |> Enum.filter(fn(item) -> item end)
