@@ -44,7 +44,8 @@ defmodule Awesome.MixProject do
       {:plug_cowboy, "~> 2.0"},
       {:httpoison, "~> 1.8"},
       {:earmark, "~> 1.1"},
-      {:sched_ex, "~> 1.0"}
+      {:sched_ex, "~> 1.0"},
+      {:poison, "~> 3.1"}
     ]
   end
 

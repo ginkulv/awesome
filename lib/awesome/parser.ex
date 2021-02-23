@@ -30,12 +30,12 @@ defmodule Awesome.Parser do
       [name | section] = section
       [description | items] = section
       items = items
-              |> Enum.filter(fn(item) -> Regex.match?(~r"https:\/\/github.com\/.*", item) end)
+              |> Enum.filter(fn(item) -> String.contains? item, "github.com" end)
               |> Enum.map(fn(item) ->
                 [_, url] = Regex.run(~r"\((.*?)\)", item)
-                case parse_item(url) do
-                  # {:ok, stars, days} -> %Awesome.Item{url: url, stars: stars, days: days, full_text: item}
-                  {:error} -> nil
+                case url |> parse_item do
+                  [days, stars] -> %Awesome.Item{url: url, stars: stars, days: days, full_text: item}
+                  [] -> nil
                 end
               end)
               |> Enum.filter(fn(item) -> item end)
@@ -44,8 +44,11 @@ defmodule Awesome.Parser do
   end
 
   def parse_item(url) do
-    IO.puts url
-    uri = URI.parse url
-    {:error}
+    url
+    |> URI.parse
+    |> Map.get(:path)
+    |> Github.get!
+    |> Map.get(:body)
+    |> Keyword.values
   end
 end
