@@ -7,6 +7,7 @@ defmodule Awesome.Item do
 end
 
 defmodule Awesome.Parser do
+  alias Awesome.Github
 
   def get_sections do
     get_file()
@@ -28,11 +29,23 @@ defmodule Awesome.Parser do
     |> Enum.map(fn(section) ->
       [name | section] = section
       [description | items] = section
-      items = Enum.map(items, fn(item) ->
-        [_, url] = Regex.run(~r"\((.*)\)", item)
-        %Awesome.Item{url: url, full_text: item}
-      end)
+      items = items
+              |> Enum.filter(fn(item) -> Regex.match?(~r"https:\/\/github.com\/.*", item) end)
+              |> Enum.map(fn(item) ->
+                [_, url] = Regex.run(~r"\((.*?)\)", item)
+                case parse_item(url) do
+                  # {:ok, stars, days} -> %Awesome.Item{url: url, stars: stars, days: days, full_text: item}
+                  {:error} -> nil
+                end
+              end)
+              |> Enum.filter(fn(item) -> item end)
       %Awesome.Section{name: name, description: description, items: items}
     end)
+  end
+
+  def parse_item(url) do
+    IO.puts url
+    uri = URI.parse url
+    {:error}
   end
 end
