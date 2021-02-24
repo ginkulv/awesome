@@ -15,6 +15,10 @@ defmodule Awesome.Application do
       %{id: "daily", start: {SchedEx, :run_every, [Awesome.Runner, :update_sections, [], "1 1 * * *"]}}
     ]
 
+    children = if Mix.env() == :test do
+      children -- [Awesome.Runner]
+    end
+
     opts = [strategy: :one_for_one, name: Awesome.Supervisor]
     Supervisor.start_link(children, opts)
   end

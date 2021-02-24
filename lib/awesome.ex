@@ -11,5 +11,6 @@ defmodule Awesome do
     IO.puts min_stars
     Repo.all(Section)
     |> Repo.preload(items: from(i in Awesome.Item, where: i.stars >= ^min_stars))
+    |> Enum.filter(fn(section) -> section.items != [] end)
   end
 end
