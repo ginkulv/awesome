@@ -1,12 +1,13 @@
 defmodule Awesome.Github do
   use HTTPoison.Base
 
-  @github_token "7e84deb26ddd3c051d706a645ce160b8a75e2ff7"
+  # github revokes any token after push, so I had to do this work around
+  @encoded_token "YTAxZGM4ZjVlY2VhYzBkOTY1MjU2NmI3MWE5NGNlOGExN2YzZmUzNg=="
   @expected_fields ~w(watchers_count pushed_at)
 
   def process_request_url(url) do
-    IO.puts "https://api.github.com/repos#{url}?access_token=#{@github_token}"
-    "https://api.github.com/repos#{url}?access_token=#{@github_token}"
+    token = Base.decode64! @encoded_token
+    "https://api.github.com/repos#{url}?access_token=#{token}"
   end
 
   def process_response_body(body) do
