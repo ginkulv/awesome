@@ -6,8 +6,7 @@ defmodule Awesome.Github do
   @expected_fields ~w(watchers_count pushed_at)
 
   def process_request_url(url) do
-    token = Base.decode64! @encoded_token
-    "https://api.github.com/repos#{url}?access_token=#{token}"
+    "https://api.github.com/repos" <> url
   end
 
   def process_response_body(body) do
@@ -15,5 +14,10 @@ defmodule Awesome.Github do
     |> Poison.decode!
     |> Map.take(@expected_fields)
     |> Enum.map(fn({k, v}) -> {String.to_atom(k), v} end)
+  end
+
+  def get_repos(url) do
+    headers = [{"Authorization", "token " <> Base.decode64! @encoded_token}]
+    get!(url, headers)
   end
 end

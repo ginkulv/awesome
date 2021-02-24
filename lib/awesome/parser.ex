@@ -34,7 +34,7 @@ defmodule Awesome.Parser do
     url
     |> URI.parse
     |> Map.get(:path)
-    |> Github.get!
+    |> Github.get_repos
     |> Map.get(:body)
     |> Keyword.values
   end
