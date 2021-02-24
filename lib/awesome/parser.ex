@@ -4,7 +4,6 @@ defmodule Awesome.Parser do
   def get_sections(file) do
     [content | _resources] = String.split(file, "\n# ")
     [_header | content] = String.split(content, "## ", trim: true)
-    content = [hd(content)]
     content
     |> Enum.map(&String.split(&1, "\n", trim: true))
     |> Enum.map(fn(section) ->

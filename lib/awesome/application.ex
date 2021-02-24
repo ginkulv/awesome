@@ -17,6 +17,8 @@ defmodule Awesome.Application do
 
     children = if Mix.env() == :test do
       children -- [Awesome.Runner]
+    else
+      children
     end
 
     opts = [strategy: :one_for_one, name: Awesome.Supervisor]
