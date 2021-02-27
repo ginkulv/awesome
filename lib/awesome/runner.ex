@@ -22,9 +22,7 @@ defmodule Awesome.Runner do
     |> HTTPoison.get!
     |> Map.get(:body)
     |> Parser.get_sections
-    |> Enum.each(fn(section) ->
-      Repo.insert(section)
-    end)
+    |> Enum.each(&Repo.insert/1)
     IO.puts "Data is collected"
   end
 end
